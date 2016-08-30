@@ -21,7 +21,7 @@
 - Update `Dockerfile`:
 
 ```Dockerfile
-FROM atotocz/docker-nginx-php-stack:stable
+FROM atoto/docker-nginx-php-stack:stable
 
 # copy sources to container
 ADD . /var/www/html
