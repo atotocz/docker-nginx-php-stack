@@ -8,7 +8,7 @@ RUN apt-get update -y && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen en_US.UTF-8 && \
     dpkg-reconfigure locales && \
     pecl install mongodb && docker-php-ext-enable mongodb && \
-    docker-php-ext-install bcmath mbstring intl iconv mcrypt zip && \
+    docker-php-ext-install bcmath mbstring intl iconv mcrypt zip mysqli pdo pdo_mysql && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/www/html/* && \
     touch /run/nginx.pid && touch /run/supervisord.pid && \
@@ -16,8 +16,7 @@ RUN apt-get update -y && \
     php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php && \
     php composer-setup.php && \
     php -r "unlink('composer-setup.php');" && \
-    mv composer.phar /usr/local/bin/composer && \
-    composer config -g github-oauth.github.com 1052f64169dfc670efbd96edc03bbd517585d44d
+    mv composer.phar /usr/local/bin/composer
 
 COPY rootfs /
 
