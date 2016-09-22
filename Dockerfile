@@ -24,6 +24,7 @@ COPY rootfs /
 RUN chown www-data:www-data /etc/supervisor/supervisord.conf && \
     chmod +x /entrypoint.sh && \
     mkdir -p /var/www/.composer && \
+    chmod -R 777 /var/www/.composer && \
     chown -R www-data:www-data /var/www/*
 
 WORKDIR /var/www/html
