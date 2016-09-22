@@ -22,7 +22,9 @@ RUN apt-get update -y && \
 COPY rootfs /
 
 RUN chown www-data:www-data /etc/supervisor/supervisord.conf && \
-    chmod +x /entrypoint.sh
+    chmod +x /entrypoint.sh && \
+    mkdir -p /var/www/.composer && \
+    chown -R www-data:www-data /var/www/*
 
 WORKDIR /var/www/html
 
