@@ -58,6 +58,14 @@ command=bin/console r:c -w -m 100 products-sync
 command=bin/console another:command
 ```
 
+- You can define `crontab` which will be used to run cron jobs inside container:
+
+```bash
+# contents of file crontab
+
+* * * * * echo "Hello world every minute"
+```
+
 ## Recommendations
 
 - run `composer install` before building your docker image and setup caching for faster builds:

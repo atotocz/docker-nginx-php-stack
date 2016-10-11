@@ -24,6 +24,15 @@ if [ -f /var/www/html/supervisord.conf ]; then
     cat /var/www/html/supervisord.conf >> /etc/supervisor/supervisord.conf
 fi
 
+
+# setup cron
+
+if [ -f /var/www/html/crontab ]; then
+	echo "===> detected crontab in project root"
+	crontab /var/www/html/crontab
+	crontab -l
+fi
+
 echo -e "===> generated supervisord configuration:\n"
 cat /etc/supervisor/supervisord.conf
 echo -e "\n\n===> starting supervisord..."
