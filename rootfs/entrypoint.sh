@@ -27,10 +27,17 @@ fi
 
 # setup cron
 
-if [ -f /var/www/html/crontab ]; then
-	echo "===> detected crontab in project root"
-	crontab /var/www/html/crontab
-	crontab -l
+if [ "$GIT_BRANCH" == 'develop' ] || [ "$GIT_BRANCH" == 'master' ]; then
+	if [ -f /var/www/html/crontab ]; then
+		echo "===> detected crontab in project root"
+		crontab /var/www/html/crontab
+		crontab -l
+		echo "" >> /etc/supervisor/supervisord.conf
+		echo "[program:cron]" >> /etc/supervisor/supervisord.conf
+		echo "command=cron -f -L 15" >> /etc/supervisor/supervisord.conf
+		echo "autostart=true" >> /etc/supervisor/supervisord.conf
+		echo "autorestart=true" >> /etc/supervisor/supervisord.conf
+	fi
 fi
 
 echo -e "===> generated supervisord configuration:\n"
