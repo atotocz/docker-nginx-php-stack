@@ -35,7 +35,7 @@ RUN mkdir -p var && \
     # ...
 ```
 
-- NGIX will listen on port `8080`
+- NGIX will listen on port `80`
 - If you would like to run some commands on container start (migrate database etc.), just create file called `docker-run.sh` in your project root:
 
 ```bash

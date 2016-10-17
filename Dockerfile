@@ -30,5 +30,6 @@ RUN chown www-data:www-data /etc/supervisor/supervisord.conf && \
 WORKDIR /var/www/html
 
 EXPOSE 8080
+EXPOSE 80
 
 CMD ["/entrypoint.sh"]
