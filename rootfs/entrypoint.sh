@@ -3,6 +3,10 @@
 
 # run startup commands
 
+if [ -f /var/www/html/.docker/docker-run.sh ]; then
+	cp /var/www/html/.docker/docker-run.sh /var/www/html/docker-run.sh
+fi
+
 if [ -f /var/www/html/docker-run.sh ]; then
 	echo "===> detected docker-run.conf in project root:"
 	cat /var/www/html/docker-run.sh
@@ -18,6 +22,10 @@ fi
 
 # update supervisor configuration
 
+if [ -f /var/www/html/.docker/supervisord.conf ]; then
+	cp /var/www/html/.docker/supervisord.conf /var/www/html/supervisord.conf
+fi
+
 if [ -f /var/www/html/supervisord.conf ]; then
 	echo "===> detected supervisord.conf in project root"
 	echo -e "\n" >> /etc/supervisor/supervisord.conf
@@ -28,6 +36,10 @@ fi
 # setup cron
 
 if [ "$GIT_BRANCH" == 'develop' ] || [ "$GIT_BRANCH" == 'master' ]; then
+	if [ -f /var/www/html/.docker/crontab ]; then
+		cp /var/www/html/.docker/crontab /var/www/html/crontab
+	fi
+	
 	if [ -f /var/www/html/crontab ]; then
 		echo "===> detected crontab in project root"
 		crontab /var/www/html/crontab
