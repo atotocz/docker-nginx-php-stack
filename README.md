@@ -35,7 +35,7 @@ RUN mkdir -p var && \
     # ...
 ```
 
-- NGIX will listen on port `80`
+- NGIX will listen on port `8080`
 - If you would like to run some commands on container start (migrate database etc.), just create file called `docker-run.sh` in your project root:
 
 ```bash
@@ -58,39 +58,10 @@ command=bin/console r:c -w -m 100 products-sync
 command=bin/console another:command
 ```
 
-- You can define `crontab` which will be used to run cron jobs inside container:
+- You can define `crontab` which will be used to run cron jobs inside container (you must be root):
 
 ```bash
 # contents of file crontab
 
 * * * * * echo "Hello world every minute"
-```
-
-## Recommendations
-
-- run `composer install` before building your docker image and setup caching for faster builds:
-
-```yml
-# circle.yml
-
-dependencies:
-    cache_directories:
-        - ~/.composer/cache
-    override:
-        - composer install --ignore-platform-reqs --no-interaction --no-dev --optimize-autoloader
-        - docker build -t atotocz/image:tag .
-```
-
-- cache docker layers ([not enabled by default](https://circleci.com/docs/docker/#caching-docker-layers])):
-
-```yml
-# circle.yml
-
-dependencies:
-    cache_directories:
-        - "~/docker"
-    override:
-        - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
-        - docker build -t atotocz/image:tag .
-        - mkdir -p ~/docker; docker save atotocz/image:tag > ~/docker/image.tar
 ```

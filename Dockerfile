@@ -12,8 +12,8 @@ RUN apt-get update -y && \
     docker-php-ext-install bcmath mbstring intl iconv mcrypt zip mysqli pdo pdo_mysql && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/www/html/* && \
-    touch /run/nginx.pid && touch /run/supervisord.pid && touch /var/run/crond.pid && \
-    chown -R www-data:www-data /var/www /var/lib/nginx /run/nginx.pid /run/supervisord.pid /var/run/crond.pid && \
+    touch /run/nginx.pid && touch /run/php-fpm.pid && touch /run/supervisord.pid && touch /var/run/crond.pid && \
+    chown -R www-data:www-data /var/www /var/lib/nginx /run/nginx.pid /run/php-fpm.pid /run/supervisord.pid /var/run/crond.pid && \
     php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php && \
     php composer-setup.php && \
     php -r "unlink('composer-setup.php');" && \
@@ -30,6 +30,5 @@ RUN chown www-data:www-data /etc/supervisor/supervisord.conf && \
 WORKDIR /var/www/html
 
 EXPOSE 8080
-EXPOSE 80
 
 CMD ["/entrypoint.sh"]
