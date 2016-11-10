@@ -8,8 +8,8 @@
 ## Installed tools
 
 - Based on Debian 8.5 (jessie)
-- PHP 7, php-fpm with extensions mongodb, bcmath, mbstring, intl, iconv, mcrypt, zip
-- NGINX 1.6
+- PHP 7, php-fpm with extensions mongodb, bcmath, mbstring, intl, iconv, mcrypt, zip...
+- NGINX
 - Supervisor
 - GIT
 - Composer 
@@ -17,26 +17,34 @@
 ## How to use this image as a base php image
 
 - Copy sources of your application to `/var/www/html`
-- All HTTP requests are routed to `/var/www/html/web/app.php`
+- All HTTP requests will be routed to `/var/www/html/web/app.php`
 - Update `Dockerfile`:
 
 ```Dockerfile
-FROM atoto/docker-nginx-php-stack:stable
+FROM atoto/docker-nginx-php-stack:latest
+
+# install dependencies
+RUN composer config -g github-oauth.github.com 7096d12b70dc7a7e06f0b669cbfc7341ad003629
+COPY composer.json composer.lock /var/www/html/
+RUN composer install --no-dev --optimize-autoloader
 
 # copy sources to container
 ADD . /var/www/html
 
-# create necessary files and directories, install dependencies
-RUN mkdir -p var && \
-    chmod -R 0777 var && \
-    cp app/config/parameters.prod.yml.dist app/config/parameters.yml && \
-    composer install --no-dev --optimize-autoloader && \
+# create necessary files and directories, set permissions
+RUN rm -fr var/* && \
+    mkdir -p var var/logs var/temp var/cache && \
+    chown -R www-data:www-data /var/www/* && \
+    chmod -R 777 var/* && \
     bin/console  doctrine:mongodb:generate:proxies
     # ...
+
+# start container as a non-root user
+USER www-data
 ```
 
-- NGIX will listen on port `8080`
-- If you would like to run some commands on container start (migrate database etc.), just create file called `docker-run.sh` in your project root:
+- NGIX will be listening on port `8080`
+- If you would like to run some commands on container start (migrate database etc.), just create file called `docker-run.sh` in your project root or in `.docker` directory:
 
 ```bash
 # contents of file docker-run.sh
@@ -46,7 +54,7 @@ bin/console doctrine:mongodb:schema:update
 # ...
 ```
 
-- If you would like to add something to supervisor configuration (consumers etc.), create file called `supervisord.conf` in your project root:
+- If you would like to add something to supervisor configuration (consumers etc.), create file called `supervisord.conf` in your project root or in `.docker` directory:
 
 ```
 # contents of file supervisord.conf
