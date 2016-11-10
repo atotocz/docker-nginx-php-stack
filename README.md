@@ -24,7 +24,7 @@
 FROM atoto/docker-nginx-php-stack:latest
 
 # install dependencies
-RUN composer config -g github-oauth.github.com 7096d12b70dc7a7e06f0b669cbfc7341ad003629
+RUN composer config -g github-oauth.github.com abcdef1021992sdmksmkskm
 COPY composer.json composer.lock /var/www/html/
 RUN composer install --no-dev --optimize-autoloader
 
