@@ -1,4 +1,4 @@
-FROM php:7.0.21-fpm
+FROM php:7.1.9-fpm
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -21,7 +21,11 @@ RUN apt-get update -y && \
     php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php && \
     php composer-setup.php && \
     php -r "unlink('composer-setup.php');" && \
-    mv composer.phar /usr/local/bin/composer
+    mv composer.phar /usr/local/bin/composer && \
+    > /var/www/.viminfo && \
+    echo 'syntax on' > /var/www/.vimrc && \
+    echo 'set number' >> /var/www/.vimrc && \
+    chmod 777 /var/www/.viminfo /var/www/.vimrc
 
 COPY rootfs /
 
